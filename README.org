@@ -1,0 +1,25 @@
+* Arduino Uno build toolchain.
+** Device identification
+   After plugging in Arduino Uno Rev3 it shows up as /dev/ttyACM0. That last 0 may vary. This version of Arduino links the Atmega328p mcu to the computer through usb using another mcu Atmega16U2. This microcontroller present the board to computer as modem and therefore the board shows up as ttyACM*. There are other Arduinos like old ones that have a USB to serial chip like ftdi232 or ch340 to connect the board to the computer and they show up as ttyUSB* and the computer talks to the board using the usb driver specific to that chip. In case of Atmega16U2 mcu, it implements the standard modem protocol and that shows up as ttyACM*. Please see the resources section.
+** Install the necessary software libraries and tools.
+#+BEGIN_SRC sh
+  sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
+#+END_SRC
+** Write a program
+** Build the program
+   I am using the instruction at [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][arduino from scratch]] article.
+   1. Compile the source into an object file. 
+#+BEGIN_EXAMPLE
+  $ avr-gcc -I ~/Downloads/arduino-1.8.2/hardware/tools/avr/avr/include/ -mmcu=atmega328p -Wall -DF_CPU=16000000L -Os arduino_blink.c -o arduino_blink.elf                                                                      
+  $ avr-objcopy -O ihex -R .eeprom blink.elf arduino_blink.hex
+  $ sudo ~/Downloads/arduino-1.8.2/hardware/tools/avr/bin/avrdude -c arduino -p atmega328p -P /dev/ttyACM0 -b 115200 -C ~/Downloads/arduino-1.8.2/hardware/tools/avr/etc/avrdude.conf -U flash:w:arduino_blink.hex              
+
+#+END_EXAMPLE
+** Resources
+   [[http://canthack.org/2010/12/programming-the-arduino-in-pure-c/][Programming Arduino in pure C]]
+   [[http://brittonkerin.com/cduino/lessons.html][Brief tutorial on programming atmega w/o Arduino software]]
+   [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][Arduino sketch from scratch]]
+   [[https://gist.githubusercontent.com/dagon666/6654222/raw/bb53112635d79285ef51e69b34d1fcda9a5adc60/Makefile][Example Makefile]]
+   [[https://www.rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/][Difference between ttyUSB and ttyACM]]
+   [[http://www.joakimlinde.se/microcontrollers/arduino/avr/udev.php][Udev rules for Arduino development]]
+   [[https://github.com/NicoHood/HoodLoader2][Program that other microcontroller Atmega16u2 in your Arduino board]]
