@@ -16,10 +16,10 @@
 
 #+END_EXAMPLE
 ** Resources
-   [[http://canthack.org/2010/12/programming-the-arduino-in-pure-c/][Programming Arduino in pure C]]
-   [[http://brittonkerin.com/cduino/lessons.html][Brief tutorial on programming atmega w/o Arduino software]]
-   [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][Arduino sketch from scratch]]
-   [[https://gist.githubusercontent.com/dagon666/6654222/raw/bb53112635d79285ef51e69b34d1fcda9a5adc60/Makefile][Example Makefile]]
-   [[https://www.rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/][Difference between ttyUSB and ttyACM]]
-   [[http://www.joakimlinde.se/microcontrollers/arduino/avr/udev.php][Udev rules for Arduino development]]
-   [[https://github.com/NicoHood/HoodLoader2][Program that other microcontroller Atmega16u2 in your Arduino board]]
+   1. [[http://canthack.org/2010/12/programming-the-arduino-in-pure-c/][Programming Arduino in pure C]]
+   2. [[http://brittonkerin.com/cduino/lessons.html][Brief tutorial on programming atmega w/o Arduino software]]
+   3. [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][Arduino sketch from scratch]]
+   4. [[https://gist.githubusercontent.com/dagon666/6654222/raw/bb53112635d79285ef51e69b34d1fcda9a5adc60/Makefile][Example Makefile]]
+   5. [[https://www.rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/][Difference between ttyUSB and ttyACM]]
+   6. [[http://www.joakimlinde.se/microcontrollers/arduino/avr/udev.php][Udev rules for Arduino development]]
+   7. [[https://github.com/NicoHood/HoodLoader2][Program that other microcontroller Atmega16u2 in your Arduino board]]
