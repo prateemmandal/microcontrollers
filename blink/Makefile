@@ -1,5 +1,5 @@
-TARGET=arduino_blink
-SOURCES=arduino_blink.c
+TARGET=blink
+SOURCES=blink.c
 DEPS=
 COBJ=$(SOURCES:.c=.o)
 

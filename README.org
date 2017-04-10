@@ -6,6 +6,8 @@
   sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
 #+END_SRC
 ** Write a program
+*** Notes on blinking LED program
+    I mistakenly set the DDRD for 2 to 7 as 0 that is input and then set the PORT to blink and unblink as in the loop. And blinking program did work though the LED blinking was very dim. It is because when set as input the PORT controls the pull up resister, 0 means floating and 1 means pull up. So the LEDs were drawing current from the pull up resistor and also acting as a switch which is closed. What use case is to leave input pins floating? Mostly none. But while using on chip ADC, ADC port pins must be configured as tristated. Hmm..
 ** Build the program
    I am using the instruction at [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][arduino from scratch]] article.
    1. Compile the source into an object file. 
@@ -23,3 +25,11 @@
    5. [[https://www.rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/][Difference between ttyUSB and ttyACM]]
    6. [[http://www.joakimlinde.se/microcontrollers/arduino/avr/udev.php][Udev rules for Arduino development]]
    7. [[https://github.com/NicoHood/HoodLoader2][Program that other microcontroller Atmega16u2 in your Arduino board]]
+   8. [[http://www.avrfreaks.net/forum/port-pin-ddr-basic-questions][Quick and complete notes on input ports and pull up resistors]]
+   9. [[http://www.elecrom.com/avr-tutorial-2-avr-input-output/][Use case for leaving input pin floating]]
+   10. [[http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html][Pull up and pull down in simple TTL logic from transistors]]
+   11. [[http://garretlab.web.fc2.com/en/arduino/inside/arduino/wiring_digital.c/pinMode.html][Atomic setup of DDR*, PORT* and PIN*]]
+   12. [[http://stackoverflow.com/questions/14449141/the-difference-between-asm-asm-volatile-and-clobbering-memory][GCC's asm, volatile and memory clobber semantics]]
+   13. [[http://blog.regehr.org/archives/28][On why memory barrier is needed beyond volatile]]
+   14. [[http://www.atmel.com/webdoc/avrlibcreferencemanual/optimization_1optim_code_reorder.html][AVR Libc notes on reordering code]]
+   15. [[http://pcarduino.blogspot.com/2013/09/introduction-to-pure-c-arduino-library.html][Timers and delays in pure C]]
