@@ -19,6 +19,22 @@
   $ sudo ~/Downloads/arduino-1.8.2/hardware/tools/avr/bin/avrdude -c arduino -p atmega328p -P /dev/ttyACM0 -b 115200 -C ~/Downloads/arduino-1.8.2/hardware/tools/avr/etc/avrdude.conf -U flash:w:arduino_blink.hex              
 
 #+END_EXAMPLE
+* Driving Arduino Uno using usb to serial chip
+  Connect the usb to serial usb port to computer and the 6 pins to the appropriate atmega328p pins. See resources on how to do that. In brief
+  |------+-------+---------------------|
+  | FTDI | UNO   | Comment             |
+  |------+-------+---------------------|
+  | Tx   | Rx    |                     |
+  | Rx   | Tx    |                     |
+  | DTR  | Reset | through a .01uF cap |
+  | +5V  | Vin   |                     |
+  | GND  | GND   |                     |
+  | CTS  | GND   |                     |
+  |------+-------+---------------------|
+  To reprogram Atmega328p do one of the following
+  1. Hold the reset button down, hit enter on the avrdude program (or 'make install') and release the reset button.
+  2. Hit enter on the avrdude program (or 'make install') and press and release the reset button right after.
+  3. Hit enter on the avrdude program (or 'make install') and it will report stk sync error and retry 10 times, in this interval keep pressing and releasing the reset button. At some point you will get lucky and the timing will be right and avrdude will write the program.
 * Resources
   1. [[http://canthack.org/2010/12/programming-the-arduino-in-pure-c/][Programming Arduino in pure C]]
   2. [[http://brittonkerin.com/cduino/lessons.html][Brief tutorial on programming atmega w/o Arduino software]]
@@ -38,5 +54,6 @@
   16. [[https://www.youtube.com/watch?v=cAui6116XKc][How to setup timer interrupts on atmega328p?]]
   17. [[http://www.avrfreaks.net/comment/619240#comment-619240][What happens after main program exits?]]
   18. [[https://forum.arduino.cc/index.php?topic=100028.0][FTDI to TTL connections to Arduino board]]
-  19. [[http://baldwisdom.com/bootloading/][Everything about bootloading]]
-  20. [[https://github.com/Optiboot/optiboot/wiki/HowOptibootWorks][How optiboot works]]
+  19. [[http://forum.arduino.cc/index.php?topic=26877.0][... and dont forget to add a capacitor between DTR and reset pin]]
+  20. [[http://baldwisdom.com/bootloading/][Everything about bootloading]]
+  21. [[https://github.com/Optiboot/optiboot/wiki/HowOptibootWorks][How optiboot works]]
