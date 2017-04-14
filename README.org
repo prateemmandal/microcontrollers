@@ -1,6 +1,8 @@
 * Arduino Uno build toolchain.
 ** Device identification
-   After plugging in Arduino Uno Rev3 it shows up as /dev/ttyACM0. That last 0 may vary. This version of Arduino links the Atmega328p mcu to the computer through usb using another mcu Atmega16U2. This microcontroller present the board to computer as modem and therefore the board shows up as ttyACM*. There are other Arduinos like old ones that have a USB to serial chip like ftdi232 or ch340 to connect the board to the computer and they show up as ttyUSB* and the computer talks to the board using the usb driver specific to that chip. In case of Atmega16U2 mcu, it implements the standard modem protocol and that shows up as ttyACM*. Please see the resources section.
+   After plugging in Arduino Uno Rev3 it shows up as /dev/ttyACM0. That last 0 may vary. This version of Arduino links the Atmega328p mcu to the computer through usb using another mcu Atmega16u2. This microcontroller present the board to computer as modem and therefore the board shows up as ttyACM*. There are other Arduinos like old ones that have a USB to serial convertor chip like FTDI232R or CH340G to connect the board to the computer and they show up as ttyUSB* and the computer talks to the board using the usb driver specific to that convertor chip. In case of Atmega16u2 mcu, it implements the standard CDC modem protocol to talk to the computer that shows up as ttyACM*. Advantage of this is that the generic driver for CDC modem protocol can be used to connect to Arduino and no convertor specific driver needs to be installed. Whether it is FTDI232R/CH340G convertor chip or Atmega16u2, the communication from here to the Atmega328p is using serial protocol. Please see the resources section.
+** Arduino bootstrapping
+   The Atmega328p mcu has a bootloader that talks over the TX and RX pins over serial connection using STK500 protocol. Arduino IDE uses a program 'avrdude' to talk to the bootloader using STK500 protocol. This communication is sent over USB port using the CDC modem driver (cdc_acm) to Atmega16u2 which then converts the data to RS232 serial to the Atmega328p. Or the communication is sent over USB port using driver specific to USB to serial convertor chip (FTDI232R/CH340G/etc) and then from there onto Atmega328p in serial. 
 ** Install the necessary software libraries and tools.
 #+BEGIN_SRC sh
   sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude
@@ -17,19 +19,24 @@
   $ sudo ~/Downloads/arduino-1.8.2/hardware/tools/avr/bin/avrdude -c arduino -p atmega328p -P /dev/ttyACM0 -b 115200 -C ~/Downloads/arduino-1.8.2/hardware/tools/avr/etc/avrdude.conf -U flash:w:arduino_blink.hex              
 
 #+END_EXAMPLE
-** Resources
-   1. [[http://canthack.org/2010/12/programming-the-arduino-in-pure-c/][Programming Arduino in pure C]]
-   2. [[http://brittonkerin.com/cduino/lessons.html][Brief tutorial on programming atmega w/o Arduino software]]
-   3. [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][Arduino sketch from scratch]]
-   4. [[https://gist.githubusercontent.com/dagon666/6654222/raw/bb53112635d79285ef51e69b34d1fcda9a5adc60/Makefile][Example Makefile]]
-   5. [[https://www.rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/][Difference between ttyUSB and ttyACM]]
-   6. [[http://www.joakimlinde.se/microcontrollers/arduino/avr/udev.php][Udev rules for Arduino development]]
-   7. [[https://github.com/NicoHood/HoodLoader2][Program that other microcontroller Atmega16u2 in your Arduino board]]
-   8. [[http://www.avrfreaks.net/forum/port-pin-ddr-basic-questions][Quick and complete notes on input ports and pull up resistors]]
-   9. [[http://www.elecrom.com/avr-tutorial-2-avr-input-output/][Use case for leaving input pin floating]]
-   10. [[http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html][Pull up and pull down in simple TTL logic from transistors]]
-   11. [[http://garretlab.web.fc2.com/en/arduino/inside/arduino/wiring_digital.c/pinMode.html][Atomic setup of DDR*, PORT* and PIN*]]
-   12. [[http://stackoverflow.com/questions/14449141/the-difference-between-asm-asm-volatile-and-clobbering-memory][GCC's asm, volatile and memory clobber semantics]]
-   13. [[http://blog.regehr.org/archives/28][On why memory barrier is needed beyond volatile]]
-   14. [[http://www.atmel.com/webdoc/avrlibcreferencemanual/optimization_1optim_code_reorder.html][AVR Libc notes on reordering code]]
-   15. [[http://pcarduino.blogspot.com/2013/09/introduction-to-pure-c-arduino-library.html][Timers and delays in pure C]]
+* Resources
+  1. [[http://canthack.org/2010/12/programming-the-arduino-in-pure-c/][Programming Arduino in pure C]]
+  2. [[http://brittonkerin.com/cduino/lessons.html][Brief tutorial on programming atmega w/o Arduino software]]
+  3. [[http://thinkingonthinking.com/an-arduino-sketch-from-scratch/][Arduino sketch from scratch]]
+  4. [[https://gist.githubusercontent.com/dagon666/6654222/raw/bb53112635d79285ef51e69b34d1fcda9a5adc60/Makefile][Example Makefile]]
+  5. [[https://www.rfc1149.net/blog/2013/03/05/what-is-the-difference-between-devttyusbx-and-devttyacmx/][Difference between ttyUSB and ttyACM]]
+  6. [[http://www.joakimlinde.se/microcontrollers/arduino/avr/udev.php][Udev rules for Arduino development]]
+  7. [[https://github.com/NicoHood/HoodLoader2][Program that other microcontroller Atmega16u2 in your Arduino board]]
+  8. [[http://www.avrfreaks.net/forum/port-pin-ddr-basic-questions][Quick and complete notes on input ports and pull up resistors]]
+  9. [[http://www.elecrom.com/avr-tutorial-2-avr-input-output/][Use case for leaving input pin floating]]
+  10. [[http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html][Pull up and pull down in simple TTL logic from transistors]]
+  11. [[http://garretlab.web.fc2.com/en/arduino/inside/arduino/wiring_digital.c/pinMode.html][Atomic setup of DDR*, PORT* and PIN*]]
+  12. [[http://stackoverflow.com/questions/14449141/the-difference-between-asm-asm-volatile-and-clobbering-memory][GCC's asm, volatile and memory clobber semantics]]
+  13. [[http://blog.regehr.org/archives/28][On why memory barrier is needed beyond volatile]]
+  14. [[http://www.atmel.com/webdoc/avrlibcreferencemanual/optimization_1optim_code_reorder.html][AVR Libc notes on reordering code]]
+  15. [[http://pcarduino.blogspot.com/2013/09/introduction-to-pure-c-arduino-library.html][Timers and delays in pure C]]
+  16. [[https://www.youtube.com/watch?v=cAui6116XKc][How to setup timer interrupts on atmega328p?]]
+  17. [[http://www.avrfreaks.net/comment/619240#comment-619240][What happens after main program exits?]]
+  18. [[https://forum.arduino.cc/index.php?topic=100028.0][FTDI to TTL connections to Arduino board]]
+  19. [[http://baldwisdom.com/bootloading/][Everything about bootloading]]
+  20. [[https://github.com/Optiboot/optiboot/wiki/HowOptibootWorks][How optiboot works]]

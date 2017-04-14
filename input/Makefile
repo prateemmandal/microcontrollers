@@ -10,6 +10,7 @@ CFLAGS=-I. -Wall -Os -DF_CPU=16000000UL -std=gnu99
 LDFLAGS=
 
 ISPPORT=/dev/ttyACM0
+#ISPPORT=/dev/ttyUSB1
 ISPDIR=/home/prateem/Downloads/arduino-1.8.2/hardware/tools/avr
 ISP=$(ISPDIR)/bin/avrdude
 ISPFLAGS=-c arduino -p $(MCU) -P $(ISPPORT) -b 115200 -C $(ISPDIR)/etc/avrdude.conf
